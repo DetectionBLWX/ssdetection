@@ -294,7 +294,7 @@ class FasterRCNNResNets(fasterRCNNBase):
 		self.roi_align = RoIAlignAvg(pooling_size, pooling_size, 1.0/self.feature_stride)
 		self.roi_pooling = RoIPooling(pooling_size, pooling_size, 1.0/self.feature_stride)
 		self.build_proposal_target_layer = buildProposalTargetLayer(mode, cfg)
-		# whether use FCSM or not
+		# define top model
 		self.top_model = nn.Sequential(*[self.backbone.layer4])
 		# final results
 		self.fc_cls = nn.Linear(2048, self.num_classes)
