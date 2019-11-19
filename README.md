@@ -12,7 +12,7 @@ Python: python3.x with torch==0.4.1, torchvision==0.2.2
 
 
 # Performance
-|  Backbone   | Train       |  Test         |  Pretrained Model  |  Epochs  |   $AP$    											|
+|  Backbone   | Train       |  Test         |  Pretrained Model  |  Epochs  |   AP      											|
 |  :----:     | :----:      |  :----:       |  :----:    	     |	:----:  |   :----:  											|
 | ResNet-50   | trainval35k |  minival5k    |  Caffe		     |	12 	    |	[34.9](PerformanceDetails/Res50_caffe_epoch12.MD)	|
 | ResNet-50   | trainval35k |  minival5k    |  Pytorch		     |	12	    |	[34.3](PerformanceDetails/Res50_pytorch_epoch12.MD)	|
