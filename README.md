@@ -1,6 +1,6 @@
-# FasterRCNN.pytorch
+# FasterRCNN
 ```
-Personal Implementation of FasterRCNN.
+Pytorch Implementation of FasterRCNN.
 ```
 
 
@@ -12,10 +12,12 @@ Python: python3.x with torch==0.4.1, torchvision==0.2.2
 
 
 # Performance
-|  Backbone   | Train       |  Test         |  AP(0.5:0.05:0.95)  |
-|  :----:     | :----:      |  :----:       |  :----:             |
-| ResNet-50   | trainval35k |  minival5k    |					  |
-| ResNet-101  | trainval35k |  minival5k    |					  |
+|  Backbone   | Train       |  Test         |  Pretrained Model  |  Epochs  |   $AP$    											|
+|  :----:     | :----:      |  :----:       |  :----:    	     |	:----:  |   :----:  											|
+| ResNet-50   | trainval35k |  minival5k    |  Caffe		     |	12 	    |	[34.9](PerformanceDetails/Res50_caffe_epoch12.MD)	|
+| ResNet-50   | trainval35k |  minival5k    |  Pytorch		     |	12	    |	[34.3](PerformanceDetails/Res50_pytorch_epoch12.MD)	|
+| ResNet-101  | trainval35k |  minival5k    |  Caffe		     |	12	    |	-													|
+| ResNet-101  | trainval35k |  minival5k    |  Pytorch   	     |	12	    |	-  													|
 
 
 # Usage
