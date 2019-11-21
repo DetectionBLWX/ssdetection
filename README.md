@@ -15,7 +15,7 @@ Python: python3.x with torch==0.4.1, torchvision==0.2.2
 |  Backbone   | Train       |  Test         |  Pretrained Model  |  Epochs  |	Learning Rate		|   AP      											|
 |  :----:     | :----:      |  :----:       |  :----:    	     |	:----:  |	:----:				|   :----:  											|
 | ResNet-50   | trainval35k |  minival5k    |  Caffe		     |	12 	    |	1e-2/1e-3/1e-4	    |	[34.0](PerformanceDetails/Res50_caffe_epoch12.MD)	|
-| ResNet-50   | trainval35k |  minival5k    |  Pytorch		     |	12	    |	2e-2/2e-3/2e-4   	|	[34.3](PerformanceDetails/Res50_pytorch_epoch12.MD)	|
+| ResNet-50   | trainval35k |  minival5k    |  Pytorch		     |	12	    |	2e-2/2e-3/2e-4   	|	[34.6](PerformanceDetails/Res50_pytorch_epoch12.MD)	|
 | ResNet-101  | trainval35k |  minival5k    |  Caffe		     |	12	    |	1e-2/1e-3/1e-4  	|	-													|
 | ResNet-101  | trainval35k |  minival5k    |  Pytorch   	     |	12	    |	2e-2/2e-3/2e-4		|	-  													|
 

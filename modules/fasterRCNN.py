@@ -124,6 +124,8 @@ class buildProposalTargetLayer(nn.Module):
 				bbox_targets_new[b, idx, :] = bbox_targets[b, idx, :]
 				bbox_inside_weights[b, idx, :] = self.bbox_inside_weights
 		return bbox_targets_new, bbox_inside_weights
+	def backward(self, *args):
+		pass
 
 
 '''base model for faster rcnn'''

@@ -92,6 +92,8 @@ class rpnProposalLayer(nn.Module):
 			output[i, :, 0] = i
 			output[i, :num_proposals, 1:] = proposals_single
 		return output
+	def backward(self, *args):
+		pass
 
 
 '''build target layer for rpn'''
@@ -204,6 +206,8 @@ class rpnBuildTargetLayer(nn.Module):
 			ret = torch.Tensor(batch_size, count, data.size(2)).fill_(fill).type_as(data)
 			ret[:, inds, :] = data
 		return ret
+	def backward(self, *args):
+		pass
 
 
 '''region proposal net'''
