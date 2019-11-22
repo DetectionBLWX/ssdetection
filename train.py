@@ -10,9 +10,9 @@ import argparse
 import torch.nn as nn
 import torch.optim as optim
 from modules.utils.utils import *
+from modules.utils.datasets import *
 from modules.fasterRCNN import FasterRCNNResNets
 from cfgs.getcfg import getCfgByDatasetAndBackbone
-from modules.utils.datasets.COCODataset import COCODataset, NearestRatioRandomSampler
 warnings.filterwarnings("ignore")
 
 
