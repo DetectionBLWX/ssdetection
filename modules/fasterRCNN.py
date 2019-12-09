@@ -331,4 +331,4 @@ class FasterRCNNResNets(fasterRCNNBase):
 			self.backbone.load_state_dict({k:v for k,v in torch.load(self.pretrained_model_path).items() if k in self.backbone.state_dict()})
 			self.logger_handle.info('Loading pretrained weights from %s for backbone network...' % self.pretrained_model_path)
 		else:
-			self.backbone_type = ResNets(resnet_type=self.backbone_type, pretrained=True)
+			self.backbone = ResNets(resnet_type=self.backbone_type, pretrained=True)
