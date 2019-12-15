@@ -1,6 +1,7 @@
 # FasterRCNN
 ```
 Pytorch Implementation of FasterRCNN.
+You can star this repository to keep track of the project if it's helpful for you, thank you for your support.
 ```
 
 
@@ -19,10 +20,13 @@ Python: python3.x with torch==0.4.1, torchvision==0.2.2
 | ResNet-101  | trainval35k |  minival5k    |  Caffe		     |	12	    |	1e-2/1e-3/1e-4  	|	-													|
 | ResNet-101  | trainval35k |  minival5k    |  Pytorch   	     |	12	    |	2e-2/2e-3/2e-4		|	-  													|
 
-# Trained model
+
+# Trained models
 ```
-You could get the trained model reported above at https://drive.google.com/open?id=1JYs4r1M6doRlMgKCxSWmue2iKAcMkJxe
+You could get the trained models reported above at 
+https://drive.google.com/open?id=1JYs4r1M6doRlMgKCxSWmue2iKAcMkJxe
 ```
+
 
 # Usage
 #### Setup
