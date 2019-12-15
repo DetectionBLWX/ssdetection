@@ -262,6 +262,7 @@ class fasterRCNNBase(nn.Module):
 			for p in m.parameters():
 				p.requires_grad = False
 	'''set bn eval'''
+	@staticmethod
 	def setBnEval(m):
 		classname = m.__class__.__name__
 		if classname.find('BatchNorm') != -1:
