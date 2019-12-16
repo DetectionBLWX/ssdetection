@@ -18,7 +18,8 @@ Function:
 	define the proposal layer for rpn
 Init Input:
 	--feature_stride: stride now.
-	--anchors: A x 4
+	--anchor_scales: scales for anchor boxes.
+	--anchor_ratios: ratios for anchor boxes.
 	--mode: flag about TRAIN or TEST.
 	--cfg: config file.
 Forward Input:
