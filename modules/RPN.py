@@ -22,7 +22,7 @@ Init Input:
 	--mode: flag about TRAIN or TEST.
 	--cfg: config file.
 Forward Input:
-	--x_cls_pred: N x 2 x H x W
+	--x_cls_pred/probs: N x 2 x H x W
 	--x_loc_pred: N x 4 x H x W
 	--img_info: (height, width, scale_factor)
 '''
