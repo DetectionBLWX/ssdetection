@@ -46,6 +46,8 @@ optional arguments:
                         backbone network for training.
   --checkpointspath CHECKPOINTSPATH
                         checkpoints you want to use.
+cmd example:
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python train.py --datasetname coco --backbonename resnet50
 ```
 #### Test
 ```
@@ -66,6 +68,8 @@ optional arguments:
                         checkpoints you want to use.
   --nmsthresh NMSTHRESH
                         thresh used in nms.
+cmd example:
+CUDA_VISIBLE_DEVICES=0 python test.py --checkpointspath faster_res50_trainbackup_coco/epoch_12.pth --datasetname coco --backbonename resnet50
 ```
 #### Demo
 ```
@@ -86,6 +90,8 @@ optional arguments:
                         thresh used in nms.
   --confthresh CONFTHRESH
                         thresh used in showing bounding box.
+cmd example:
+python demo.py --checkpointspath faster_res50_trainbackup_coco/epoch_12.pth --datasetname coco --backbonename resnet50 --imagepath 000001.jpg
 ```
 
 
