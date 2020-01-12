@@ -291,7 +291,8 @@ class FasterRCNNResNets(fasterRCNNBase):
 										  self.backbone.layer2,
 										  self.backbone.layer3])
 		# RPN
-		self.rpn_net = RegionProposalNet(in_channels=1024, feature_stride=self.feature_stride, mode=mode, cfg=cfg)
+		in_channels = 256 if self.backbone_type in ['resnet18', 'resnet34'] else 1024
+		self.rpn_net = RegionProposalNet(in_channels=in_channels, feature_stride=self.feature_stride, mode=mode, cfg=cfg)
 		self.roi_crop = RoICrop()
 		pooling_size = cfg.TRAIN_POOLING_SIZE if mode == 'TRAIN' else cfg.TEST_POOLING_SIZE
 		self.roi_align = RoIAlignAvg(pooling_size, pooling_size, 1.0/self.feature_stride)
@@ -300,11 +301,12 @@ class FasterRCNNResNets(fasterRCNNBase):
 		# define top model
 		self.top_model = nn.Sequential(*[self.backbone.layer4])
 		# final results
-		self.fc_cls = nn.Linear(2048, self.num_classes)
+		in_features = 512 if self.backbone_type in ['resnet18', 'resnet34'] else 2048
+		self.fc_cls = nn.Linear(in_features, self.num_classes)
 		if self.is_class_agnostic:
-			self.fc_loc = nn.Linear(2048, 4)
+			self.fc_loc = nn.Linear(in_features, 4)
 		else:
-			self.fc_loc = nn.Linear(2048, 4*self.num_classes)
+			self.fc_loc = nn.Linear(in_features, 4*self.num_classes)
 		if cfg.WEIGHTS_NEED_INITIALIZE and mode == 'TRAIN':
 			self.initializeAddedModules()
 		# fix some first layers following original implementation
