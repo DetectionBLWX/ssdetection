@@ -22,6 +22,7 @@ Python: python3.x with torch==0.4.1, torchvision==0.2.2
 | ResNet-50   | trainval35k |  minival5k    |  Pytorch		     |	12	    |	2e-2/2e-3/2e-4  	|	256			    |   [34.6](PerformanceDetails/Res50_pytorch_epoch12.MD)  |
 | ResNet-50   | trainval35k |  minival5k    |  Pytorch   	     |	12	    |	2e-2/2e-3/2e-4		|	512			    |   [34.6](PerformanceDetails/Res50_pytorch_epoch12.MD)	 |
 | ResNet-101  | trainval35k |  minival5k    |  Pytorch   	     |	12	    |	2e-2/2e-3/2e-4		|	128			    |   [37.2](PerformanceDetails/Res101_pytorch_epoch12.MD) |
+| ResNet-101  | trainval35k |  minival5k    |  Pytorch   	     |	24	    |	2e-2/2e-3/2e-4		|	128			    |   [38.8](PerformanceDetails/Res101_pytorch_epoch24.MD) |
 
 
 # Trained models
