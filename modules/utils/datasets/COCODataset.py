@@ -174,7 +174,7 @@ class COCODataset(Dataset):
 			return os.path.join(rootdir, 'annotations/image_info_test-dev2017.json')
 		else:
 			raise ValueError('COCODataset.getAnnFilePath unsupport datasettype <%s>...' % str(datasettype))
-	'''preprocess image, PIL.Image ——> np.array'''
+	'''preprocess image, PIL.Image ——> torch.tensor'''
 	@staticmethod
 	def preprocessImage(img, use_color_jitter, image_size_dict, img_norm_info, use_caffe_pretrained_model):
 		# calculate target_size and scale_factor, target_size's format is (h, w)
