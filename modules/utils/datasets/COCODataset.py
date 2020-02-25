@@ -129,7 +129,7 @@ class COCODataset(Dataset):
 			raise ValueError('COCODataset.imgid2imgpath unsupport datasettype <%s>...' % str(datasettype))
 		assert os.path.exists(imgpath), 'Image path does not exist: {}...'.format(imgpath)
 		return imgpath
-	'''convert image id to image path to annotation'''
+	'''convert image id to annotation'''
 	def id2annotation(self, index):
 		img_annotation = self.coco_api.loadImgs(index)[0]
 		width = img_annotation['width']
@@ -163,7 +163,7 @@ class COCODataset(Dataset):
 	'''calculate length'''
 	def __len__(self):
 		return len(self.filtered_img_ids)
-	'''get annotation file'''
+	'''get annotation filepath'''
 	@staticmethod
 	def getAnnFilePath(rootdir, datasettype='train2017'):
 		if datasettype == 'train2017':
