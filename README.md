@@ -95,7 +95,7 @@ optional arguments:
   --confthresh CONFTHRESH
                         thresh used in showing bounding box.
 cmd example:
-python demo.py --checkpointspath faster_res50_trainbackup_coco/epoch_12.pth --datasetname coco --backbonename resnet50 --imagepath 000001.jpg
+CUDA_VISIBLE_DEVICES=0 python demo.py --checkpointspath faster_res50_trainbackup_coco/epoch_12.pth --datasetname coco --backbonename resnet50 --imagepath 000001.jpg
 ```
 
 
