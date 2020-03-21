@@ -278,7 +278,7 @@ class RegionProposalNet(nn.Module):
 	Function:
 		generate anchors.
 	Input:
-		--base_size(int): the base anchor size (16 in faster RCNN).
+		--size_base(int): the base anchor size (16 in faster RCNN).
 		--scales(list): scales for anchor boxes.
 		--ratios(list): ratios for anchor boxes.
 	Return:
