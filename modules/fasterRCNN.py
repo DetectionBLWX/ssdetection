@@ -241,7 +241,7 @@ class FasterRCNNResNets(fasterRCNNBase):
 		self.backbone_type = cfg.BACKBONE_TYPE
 		self.pretrained_model_path = cfg.PRETRAINED_MODEL_PATH
 		self.backbone = ResNets(resnet_type=self.backbone_type, pretrained=False)
-		if cfg.WEIGHTS_NEED_INITIALIZE and mode == 'TRAIN':
+		if mode == 'TRAIN':
 			self.initializeBackbone()
 		self.backbone.avgpool = None
 		self.backbone.fc = None
