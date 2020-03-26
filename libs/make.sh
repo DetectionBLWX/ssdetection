@@ -9,4 +9,4 @@ cd ..
 
 python setup.py develop
 rm -rf build
-rm -rf FPN.egg-info
+rm -rf Faster_RCNN.egg-info
