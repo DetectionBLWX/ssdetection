@@ -178,7 +178,6 @@ class rpnBuildTargetLayer(nn.Module):
 		# format return values
 		outputs = []
 		labels = labels.view(batch_size, feature_height, feature_width, self.num_anchors).permute(0, 3, 1, 2).contiguous()
-		labels = labels.view(batch_size, 1, self.num_anchors*feature_height, feature_width)
 		outputs.append(labels)
 		bbox_targets = bbox_targets.view(batch_size, feature_height, feature_width, self.num_anchors*4).permute(0, 3, 1, 2).contiguous()
 		outputs.append(bbox_targets)
@@ -250,9 +249,9 @@ class RegionProposalNet(nn.Module):
 			# --regression loss
 			bbox_targets = targets[1]
 			if self.cfg.RPN_REG_LOSS_SET['type'] == 'betaSmoothL1Loss':
-				mask = targets[0].unsqueeze(2).expand(batch_size, targets[0].size(1), 4)
-				rpn_reg_loss = betaSmoothL1Loss(x_reg_concat[mask>0].view(-1, 4), 
-												bbox_targets[mask>0].view(-1, 4), 
+				mask = targets[0]
+				rpn_reg_loss = betaSmoothL1Loss(x_reg[mask>0], 
+												bbox_targets[mask>0], 
 												beta=self.cfg.RPN_REG_LOSS_SET['betaSmoothL1Loss']['beta'], 
 												size_average=self.cfg.RPN_REG_LOSS_SET['betaSmoothL1Loss']['size_average'],
 												loss_weight=self.cfg.RPN_REG_LOSS_SET['betaSmoothL1Loss']['weight'])
