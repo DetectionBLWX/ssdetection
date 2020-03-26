@@ -20,6 +20,10 @@ def ResNets(resnet_type, pretrained=False):
 		model = torchvision.models.resnet101(pretrained=pretrained)
 	elif resnet_type == 'resnet152':
 		model = torchvision.models.resnet152(pretrained=pretrained)
+	elif resnet_type == 'resnext50_32x4d':
+		model = torchvision.models.resnext50_32x4d(pretrained=pretrained)
+	elif resnet_type == 'resnext101_32x8d':
+		model = torchvision.models.resnext101_32x8d(pretrained=pretrained)
 	else:
 		raise ValueError('Unsupport resnet_type <%s>...' % resnet_type)
 	return model
