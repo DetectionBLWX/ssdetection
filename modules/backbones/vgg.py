@@ -8,7 +8,7 @@ import torch
 import torchvision
 
 
-'''vgg from torchvision==0.2.2'''
+'''vgg from torchvision==0.4.0'''
 def VGGs(vgg_type, pretrained=False):
 	if vgg_type == 'vgg16':
 		model = torchvision.models.vgg16(pretrained=pretrained)

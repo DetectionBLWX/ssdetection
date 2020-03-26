@@ -7,22 +7,6 @@ make
 cd ..
 cd ..
 
-cd dcn
-sh make.sh
-cd ..
-
-cd nms
-sh make.sh
-cd ..
-
-cd roi_align
-sh make.sh
-cd ..
-
-cd roi_crop
-sh make.sh
-cd ..
-
-cd roi_pooling
-sh make.sh
-cd ..
+python setup.py develop
+rm -rf build
+rm -rf FPN.egg-info

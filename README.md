@@ -8,21 +8,17 @@ You can star this repository to keep track of the project if it's helpful for yo
 # Environment
 ```
 OS: Ubuntu 16.04
-Python: python3.x with torch==0.4.1, torchvision==0.2.2
+Python: python3.x with torch==1.2.0, torchvision==0.4.0
 ```
 
 
 # Performance
-|  Backbone   | Train       |  Test         |  Pretrained Model  |  Epochs  |	Learning Rate		|   RoI per image   |   AP      							                 |
-|  :----:     | :----:      |  :----:       |  :----:    	     |	:----:  |	:----:				|   :----:  	    |	:----									             |
-| ResNet-18   | trainval35k |  minival5k    |  Pytorch		     |	12 	    |	2e-2/2e-3/2e-4	    |	128			    |   [26.8](PerformanceDetails/Res18_pytorch_epoch12.MD)	 |
-| ResNet-34   | trainval35k |  minival5k    |  Pytorch		     |	12 	    |	2e-2/2e-3/2e-4	    |	128			    |   [32.7](PerformanceDetails/Res34_pytorch_epoch12.MD)	 |
-| ResNet-50   | trainval35k |  minival5k    |  Caffe		     |	12 	    |	1e-2/1e-3/1e-4	    |	512			    |   [34.0](PerformanceDetails/Res50_caffe_epoch12.MD)	 |
-| ResNet-50   | trainval35k |  minival5k    |  Pytorch		     |	12	    |	2e-2/2e-3/2e-4   	|	128			    |   [33.9](PerformanceDetails/Res50_pytorch_epoch12.MD)  |
-| ResNet-50   | trainval35k |  minival5k    |  Pytorch		     |	12	    |	2e-2/2e-3/2e-4  	|	256			    |   [34.6](PerformanceDetails/Res50_pytorch_epoch12.MD)  |
-| ResNet-50   | trainval35k |  minival5k    |  Pytorch   	     |	12	    |	2e-2/2e-3/2e-4		|	512			    |   [34.6](PerformanceDetails/Res50_pytorch_epoch12.MD)	 |
-| ResNet-101  | trainval35k |  minival5k    |  Pytorch   	     |	12	    |	2e-2/2e-3/2e-4		|	128			    |   [37.2](PerformanceDetails/Res101_pytorch_epoch12.MD) |
-| ResNet-101  | trainval35k |  minival5k    |  Pytorch   	     |	24	    |	2e-2/2e-3/2e-4		|	128			    |   [38.8](PerformanceDetails/Res101_pytorch_epoch24.MD) |
+|  Backbone   | Train       |  Test         |  Pretrained Model  |  Epochs  |	Learning Rate		|   RoI per image   |   AP       |
+|  :----:     | :----:      |  :----:       |  :----:    	     |	:----:  |	:----:				|   :----:  	    |	:----	 |
+| ResNet-18   | trainval35k |  minival5k    |  Pytorch		     |	12 	    |	2e-2/2e-3/2e-4	    |	512			    |          	 |
+| ResNet-34   | trainval35k |  minival5k    |  Pytorch		     |	12 	    |	2e-2/2e-3/2e-4	    |	512			    |            |
+| ResNet-50   | trainval35k |  minival5k    |  Pytorch		     |	12	    |	2e-2/2e-3/2e-4   	|	512			    |            |
+| ResNet-101  | trainval35k |  minival5k    |  Pytorch   	     |	12	    |	2e-2/2e-3/2e-4		|	512			    |            |
 
 
 # Trained models

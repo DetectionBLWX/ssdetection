@@ -1,4 +1,4 @@
-'''cfg file for coco2017 dataset'''
+'''cfg file for coco2017 dataset, resnet50 backbone'''
 
 
 # anchors
@@ -14,8 +14,9 @@ TRAIN_RPN_FG_FRACTION = 0.5
 TRAIN_RPN_BATCHSIZE = 256
 TRAIN_BBOX_NORMALIZE_MEANS = (0.0, 0.0, 0.0, 0.0)
 TRAIN_BBOX_NORMALIZE_STDS = (0.1, 0.1, 0.2, 0.2)
-TRAIN_POOLING_METHOD = ['crop', 'align', 'pool'][1]
+TRAIN_POOLING_METHOD = ['align', 'pool'][0]
 TRAIN_POOLING_SIZE = 7
+TRAIN_POOLING_SAMPLE_NUM = 2
 TRAIN_ROI_BATCHSIZE = 512
 TRAIN_ROI_FG_FRACTION = 0.25
 TRAIN_ROI_FG_THRESH = 0.5
@@ -30,8 +31,9 @@ TEST_RPN_FG_FRACTION = 0.5
 TEST_RPN_BATCHSIZE = 256
 TEST_BBOX_NORMALIZE_MEANS = (0.0, 0.0, 0.0, 0.0)
 TEST_BBOX_NORMALIZE_STDS = (0.1, 0.1, 0.2, 0.2)
-TEST_POOLING_METHOD = ['crop', 'align', 'pool'][1]
+TEST_POOLING_METHOD = ['align', 'pool'][0]
 TEST_POOLING_SIZE = 7
+TEST_POOLING_SAMPLE_NUM = 2
 TEST_ROI_BATCHSIZE = 512
 TEST_ROI_FG_FRACTION = 0.25
 TEST_ROI_FG_THRESH = 0.5
@@ -56,10 +58,10 @@ CLSNAMESPATH = 'names/coco.names'
 USE_COLOR_JITTER = False
 IMAGE_NORMALIZE_INFO = {'caffe': {'mean_rgb': (0.4814576470588235, 0.4546921568627451, 0.40384352941176466), 'std_rgb': (1., 1., 1.)}, 'pytorch': {'mean_rgb': (0.485, 0.456, 0.406), 'std_rgb': (0.229, 0.224, 0.225)}}
 # loss function
-RPN_CLS_LOSS_SET = {'type': 'cross_entropy', 'cross_entropy': {'size_average': True, 'weight': 1.}}
-RCNN_CLS_LOSS_SET = {'type': 'cross_entropy', 'cross_entropy': {'size_average': True, 'weight': 1.}}
-RPN_REG_LOSS_SET = {'type': ['smoothL1Loss', 'betaSmoothL1Loss'][1], 'smoothL1Loss': {'weight': 1.}, 'betaSmoothL1Loss': {'beta': 1./9., 'size_average': True, 'weight': 1.}}
-RCNN_REG_LOSS_SET = {'type': ['smoothL1Loss', 'betaSmoothL1Loss'][1], 'smoothL1Loss': {'weight': 1.}, 'betaSmoothL1Loss': {'beta': 1., 'size_average': True, 'weight': 1.}}
+RPN_CLS_LOSS_SET = {'type': ['cross_entropy'][0], 'cross_entropy': {'size_average': True, 'weight': 1.}}
+RCNN_CLS_LOSS_SET = {'type': ['cross_entropy'][0], 'cross_entropy': {'size_average': True, 'weight': 1.}}
+RPN_REG_LOSS_SET = {'type': ['betaSmoothL1Loss'][0], 'betaSmoothL1Loss': {'beta': 1./9., 'size_average': True, 'weight': 1.}}
+RCNN_REG_LOSS_SET = {'type': ['betaSmoothL1Loss'][0], 'betaSmoothL1Loss': {'beta': 1., 'size_average': True, 'weight': 1.}}
 # optimizer
 MOMENTUM = 0.9
 WEIGHT_DECAY = 0.0001

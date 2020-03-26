@@ -92,7 +92,7 @@ def test():
 					cls_boxes = boxes_pred[idxs][:, j*4: (j+1)*4]
 				cls_dets = torch.cat((cls_boxes, cls_scores.unsqueeze(1)), 1)
 				cls_dets = cls_dets[order]
-				keep_idxs = nms(cls_dets, args.nmsthresh, force_cpu=False)
+				_, keep_idxs = nms(cls_dets, args.nmsthresh)
 				cls_dets = cls_dets[keep_idxs.view(-1).long()]
 				for cls_det in cls_dets:
 					category_id = dataset.clsids2cococlsids_dict.get(j)

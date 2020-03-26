@@ -96,10 +96,10 @@ def train():
 			optimizer.zero_grad()
 			img_ids, imgs, gt_boxes, img_info, num_gt_boxes = samples
 			output = model(x=imgs.type(FloatTensor), gt_boxes=gt_boxes.type(FloatTensor), img_info=img_info.type(FloatTensor), num_gt_boxes=num_gt_boxes.type(FloatTensor))
-			rois, cls_probs, bbox_preds, rpn_cls_loss, rpn_loc_loss, loss_cls, loss_loc = output
-			loss = rpn_cls_loss.mean() + rpn_loc_loss.mean() + loss_cls.mean() + loss_loc.mean()
-			logger_handle.info('[EPOCH]: %s/%s, [BTACH]: %s/%s, [LEARNING_RATE]: %s, [DATASET]: %s \n\t [LOSS]: rpn_cls_loss %.4f, rpn_loc_loss %.4f, loss_cls %.4f, loss_loc %.4f, total %.4f' % \
-								(epoch, end_epoch, (batch_idx+1), len(dataloader), cfg.LEARNING_RATES[learning_rate_idx], args.datasetname, rpn_cls_loss.mean().item(), rpn_loc_loss.mean().item(), loss_cls.mean().item(), loss_loc.mean().item(), loss.item()))
+			rois, cls_probs, bbox_preds, rpn_cls_loss, rpn_reg_loss, loss_cls, loss_reg = output
+			loss = rpn_cls_loss.mean() + rpn_reg_loss.mean() + loss_cls.mean() + loss_reg.mean()
+			logger_handle.info('[EPOCH]: %s/%s, [BTACH]: %s/%s, [LEARNING_RATE]: %s, [DATASET]: %s \n\t [LOSS]: rpn_cls_loss %.4f, rpn_reg_loss %.4f, loss_cls %.4f, loss_reg %.4f, total %.4f' % \
+								(epoch, end_epoch, (batch_idx+1), len(dataloader), cfg.LEARNING_RATES[learning_rate_idx], args.datasetname, rpn_cls_loss.mean().item(), rpn_reg_loss.mean().item(), loss_cls.mean().item(), loss_reg.mean().item(), loss.item()))
 			loss.backward()
 			optimizer.step()
 		# --save model
