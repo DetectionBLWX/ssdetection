@@ -142,6 +142,7 @@ class rpnBuildTargetLayer(nn.Module):
 		anchors = anchors[keep_idxs, :]
 		# prepare labels: 1 is positive, 0 is negative, -1 means ignore
 		labels = gt_boxes.new(batch_size, keep_idxs.size(0)).fill_(-1)
+		mask = gt_boxes.new(batch_size, keep_idxs.size(0)).zero_()
 		# calc ious
 		overlaps = BBoxFunctions.calcIoUs(anchors, gt_boxes)
 		max_overlaps, argmax_overlaps = torch.max(overlaps, 2)
@@ -172,11 +173,17 @@ class rpnBuildTargetLayer(nn.Module):
 		argmax_overlaps = argmax_overlaps + offsets.view(batch_size, 1).type_as(argmax_overlaps)
 		gt_rois = gt_boxes.view(-1, 5)[argmax_overlaps.view(-1), :].view(batch_size, -1, 5)
 		bbox_targets = BBoxFunctions.encodeBboxes(anchors, gt_rois[..., :4])
+		mask[labels==1] = 1
 		# unmap
 		labels = rpnBuildTargetLayer.unmap(labels, total_anchors_ori, keep_idxs, batch_size, fill=-1)
+		labels = labels.view(batch_size, 1, self.num_anchors*feature_height, feature_width)
 		bbox_targets = rpnBuildTargetLayer.unmap(bbox_targets, total_anchors_ori, keep_idxs, batch_size, fill=0)
-		# # pack return values into outputs
-		outputs = [labels, bbox_targets]
+		bbox_targets = bbox_targets.view(batch_size, feature_height, feature_width, self.num_anchors*4).permute(0, 3, 1, 2).contiguous()
+		mask = rpnBuildTargetLayer.unmap(mask, total_anchors_ori, keep_idxs, batch_size, fill=0)
+		mask = mask.view(batch_size, total_anchors_ori, 1).expand(batch_size, total_anchors_ori, 4)
+		mask = mask.contiguous().view(batch_size, feature_height, feature_width, 4*self.num_anchors).permute(0, 3, 1, 2).contiguous()
+		# pack return values into outputs
+		outputs = [labels, bbox_targets, mask]
 		return outputs
 	@staticmethod
 	def unmap(data, count, inds, batch_size, fill=0):
@@ -231,7 +238,7 @@ class RegionProposalNet(nn.Module):
 		if self.mode == 'TRAIN' and gt_boxes is not None:
 			targets = self.rpn_build_target_layer((x_cls.data, gt_boxes, img_info, num_gt_boxes))
 			# --classification loss
-			x_cls_preds = x_cls.permute(0, 2, 3, 1).contiguous().view(batch_size, -1, 2)
+			x_cls_preds = x_cls_reshape.permute(0, 2, 3, 1).contiguous().view(batch_size, -1, 2)
 			labels = targets[0].view(batch_size, -1)
 			keep_idxs = labels.view(-1).ne(-1).nonzero().view(-1)
 			x_cls_preds_keep = torch.index_select(x_cls_preds.view(-1, 2), 0, keep_idxs.data)
@@ -243,11 +250,9 @@ class RegionProposalNet(nn.Module):
 			else:
 				raise ValueError('Unkown classification loss type <%s>...' % self.cfg.RPN_CLS_LOSS_SET['type'])
 			# --regression loss
-			bbox_targets = targets[1]
-			x_reg_preds = x_reg.permute(0, 2, 3, 1).contiguous().view(batch_size, -1, 4)
+			bbox_targets, mask = targets[1:]
 			if self.cfg.RPN_REG_LOSS_SET['type'] == 'betaSmoothL1Loss':
-				mask = targets[0].unsqueeze(2).expand(batch_size, targets[0].size(1), 4)
-				rpn_reg_loss = betaSmoothL1Loss(x_reg_preds[mask>0].view(-1, 4), 
+				rpn_reg_loss = betaSmoothL1Loss(x_reg[mask>0].view(-1, 4), 
 												bbox_targets[mask>0].view(-1, 4), 
 												beta=self.cfg.RPN_REG_LOSS_SET['betaSmoothL1Loss']['beta'], 
 												size_average=self.cfg.RPN_REG_LOSS_SET['betaSmoothL1Loss']['size_average'],
