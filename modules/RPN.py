@@ -83,7 +83,7 @@ class rpnProposalLayer(nn.Module):
 				order_single = order_single[:self.pre_nms_topN]
 			proposals_single = proposals_single[order_single, :]
 			scores_single = scores_single[order_single].view(-1, 1)
-			keep_idxs = nms(torch.cat((proposals_single, scores_single), 1), self.nms_thresh, force_cpu=False)
+			_, keep_idxs = nms(torch.cat((proposals_single, scores_single), 1), self.nms_thresh, force_cpu=False)
 			keep_idxs = keep_idxs.long().view(-1)
 			if self.post_nms_topN > 0:
 				keep_idxs = keep_idxs[:self.post_nms_topN]
