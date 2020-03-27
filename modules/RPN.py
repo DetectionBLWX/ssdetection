@@ -176,6 +176,7 @@ class rpnBuildTargetLayer(nn.Module):
 		mask[labels==1] = 1
 		# unmap
 		labels = rpnBuildTargetLayer.unmap(labels, total_anchors_ori, keep_idxs, batch_size, fill=-1)
+		labels = labels.view(batch_size, feature_height, feature_width, self.num_anchors).permute(0, 3, 1, 2).contiguous()
 		labels = labels.view(batch_size, 1, self.num_anchors*feature_height, feature_width)
 		bbox_targets = rpnBuildTargetLayer.unmap(bbox_targets, total_anchors_ori, keep_idxs, batch_size, fill=0)
 		bbox_targets = bbox_targets.view(batch_size, feature_height, feature_width, self.num_anchors*4).permute(0, 3, 1, 2).contiguous()
