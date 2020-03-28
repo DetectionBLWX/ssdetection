@@ -13,12 +13,12 @@ Python: python3.x with torch==1.2.0, torchvision==0.4.0
 
 
 # Performance
-|  Backbone   | Train       |  Test         |  Pretrained Model  |  Epochs  |	Learning Rate		|   RoI per image   |   AP       |
-|  :----:     | :----:      |  :----:       |  :----:    	     |	:----:  |	:----:				|   :----:  	    |	:----	 |
-| ResNet-18   | trainval35k |  minival5k    |  Pytorch		     |	12 	    |	2e-2/2e-3/2e-4	    |	512			    |          	 |
-| ResNet-34   | trainval35k |  minival5k    |  Pytorch		     |	12 	    |	2e-2/2e-3/2e-4	    |	512			    |            |
-| ResNet-50   | trainval35k |  minival5k    |  Pytorch		     |	12	    |	2e-2/2e-3/2e-4   	|	512			    |            |
-| ResNet-101  | trainval35k |  minival5k    |  Pytorch   	     |	12	    |	2e-2/2e-3/2e-4		|	512			    |            |
+|  Backbone   | Train       |  Test         |  Pretrained Model  |  Epochs  |	Learning Rate		|   RoI per image   |   AP                                                    |
+|  :----:     | :----:      |  :----:       |  :----:    	     |	:----:  |	:----:				|   :----:  	    |	:----	                                              |
+| ResNet-18   | trainval35k |  minival5k    |  Pytorch		     |	12 	    |	2e-2/2e-3/2e-4	    |	512			    |   [27.1](PerformanceDetails/Res18_pytorch_epoch12.MD)   |
+| ResNet-34   | trainval35k |  minival5k    |  Pytorch		     |	12 	    |	2e-2/2e-3/2e-4	    |	512			    |                                                         |
+| ResNet-50   | trainval35k |  minival5k    |  Pytorch		     |	12	    |	2e-2/2e-3/2e-4   	|	512			    |                                                         |
+| ResNet-101  | trainval35k |  minival5k    |  Pytorch   	     |	12	    |	2e-2/2e-3/2e-4		|	512			    |                                                         |
 
 
 # Trained models
