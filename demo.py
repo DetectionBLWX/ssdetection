@@ -7,8 +7,7 @@ Author:
 import torch
 import argparse
 import numpy as np
-from modules.utils.utils import *
-from modules.utils.datasets import *
+from modules.utils import *
 from libs.nms.nms_wrapper import nms
 from PIL import Image, ImageDraw, ImageFont
 from modules.fasterRCNN import FasterRCNNResNets

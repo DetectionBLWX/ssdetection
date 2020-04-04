@@ -8,9 +8,9 @@ import torch
 import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
+from modules.utils import *
+from modules.losses import *
 from libs.nms.nms_wrapper import nms
-from modules.utils.utils import BBoxFunctions
-from modules.losses.smoothL1 import betaSmoothL1Loss
 
 
 '''

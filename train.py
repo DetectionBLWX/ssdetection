@@ -9,8 +9,7 @@ import warnings
 import argparse
 import torch.nn as nn
 import torch.optim as optim
-from modules.utils.utils import *
-from modules.utils.datasets import *
+from modules.utils import *
 from modules.fasterRCNN import FasterRCNNResNets
 from cfgs.getcfg import getCfgByDatasetAndBackbone
 warnings.filterwarnings("ignore")

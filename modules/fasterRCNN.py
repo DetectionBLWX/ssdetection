@@ -8,9 +8,9 @@ import torch
 import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
+from modules.utils import *
+from modules.losses import *
 from modules.backbones import *
-from modules.utils.utils import *
-from modules.losses.smoothL1 import *
 from modules.RPN import RegionProposalNet
 from libs.roi_pool.roi_pool import roi_pool
 from libs.roi_align.roi_align import roi_align
