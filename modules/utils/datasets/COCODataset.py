@@ -10,7 +10,7 @@ import torch
 import random
 import numpy as np
 from PIL import Image, ImageOps
-from modules.utils.utils import *
+from modules.utils import *
 from torch.utils.data import Dataset
 from torch.nn import functional as F
 from torchvision.transforms import transforms
