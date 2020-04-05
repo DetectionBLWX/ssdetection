@@ -8,7 +8,7 @@ import torch
 
 
 '''giou loss, I borrow the code from mmdet'''
-def GIoULoss(bbox_preds, bbox_targets, eps=1e-7, size_average=True, loss_weight=1.0):
+def GIoULoss(bbox_preds, bbox_targets, eps=1e-7, size_average=True, loss_weight=1.0, avg_factor=None):
 	# overlap
 	lt = torch.max(bbox_preds[:, :2], bbox_targets[:, :2])
 	rb = torch.min(bbox_preds[:, 2:], bbox_targets[:, 2:])
@@ -29,5 +29,8 @@ def GIoULoss(bbox_preds, bbox_targets, eps=1e-7, size_average=True, loss_weight=
 	gious = ious - (enclose_area - union) / enclose_area
 	loss = 1 - gious
 	# summary and return the loss
-	loss = loss.mean() if size_average else loss.sum()
+	if avg_factor is None:
+		loss = loss.mean() if size_average else loss.sum()
+	else:
+		loss = loss / avg_factor if size_average else loss.sum()
 	return loss * loss_weight
