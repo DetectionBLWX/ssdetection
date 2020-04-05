@@ -32,5 +32,5 @@ def GIoULoss(bbox_preds, bbox_targets, eps=1e-7, size_average=True, loss_weight=
 	if avg_factor is None:
 		loss = loss.mean() if size_average else loss.sum()
 	else:
-		loss = (loss / avg_factor) if size_average else loss.sum()
+		loss = (loss.sum() / avg_factor) if size_average else loss.sum()
 	return loss * loss_weight

@@ -15,7 +15,7 @@ def betaSmoothL1Loss(bbox_preds, bbox_targets, beta=1, size_average=True, loss_w
 	if avg_factor is None:
 		loss = loss.mean() if size_average else loss.sum()
 	else:
-		loss = (loss / avg_factor) if size_average else loss.sum()
+		loss = (loss.sum() / avg_factor) if size_average else loss.sum()
 	return loss * loss_weight
 
 
@@ -28,5 +28,5 @@ def balancedSmoothL1Loss(bbox_preds, bbox_targets, beta=1.0, alpha=0.5, gamma=1.
 	if avg_factor is None:
 		loss = loss.mean() if size_average else loss.sum()
 	else:
-		loss = (loss / avg_factor) if size_average else loss.sum()
+		loss = (loss.sum() / avg_factor) if size_average else loss.sum()
 	return loss * loss_weight
