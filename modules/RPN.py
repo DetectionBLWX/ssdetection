@@ -142,7 +142,8 @@ class rpnBuildTargetLayer(nn.Module):
 		anchors = anchors[keep_idxs, :]
 		# prepare labels: 1 is positive, 0 is negative, -1 means ignore
 		labels = gt_boxes.new(batch_size, keep_idxs.size(0)).fill_(-1)
-		mask = gt_boxes.new(batch_size, keep_idxs.size(0)).zero_()
+		# prepare bbox mask: 0 means ignore, 1 is adopted
+		bbox_mask = gt_boxes.new(batch_size, keep_idxs.size(0)).zero_()
 		# calc ious
 		overlaps = BBoxFunctions.calcIoUs(anchors, gt_boxes)
 		max_overlaps, argmax_overlaps = torch.max(overlaps, 2)
@@ -173,18 +174,18 @@ class rpnBuildTargetLayer(nn.Module):
 		argmax_overlaps = argmax_overlaps + offsets.view(batch_size, 1).type_as(argmax_overlaps)
 		gt_rois = gt_boxes.view(-1, 5)[argmax_overlaps.view(-1), :].view(batch_size, -1, 5)
 		bbox_targets = BBoxFunctions.encodeBboxes(anchors, gt_rois[..., :4])
-		mask[labels==1] = 1
+		bbox_mask[labels==1] = 1
 		# unmap
 		labels = rpnBuildTargetLayer.unmap(labels, total_anchors_ori, keep_idxs, batch_size, fill=-1)
 		labels = labels.view(batch_size, feature_height, feature_width, self.num_anchors).permute(0, 3, 1, 2).contiguous()
 		labels = labels.view(batch_size, 1, self.num_anchors*feature_height, feature_width)
 		bbox_targets = rpnBuildTargetLayer.unmap(bbox_targets, total_anchors_ori, keep_idxs, batch_size, fill=0)
 		bbox_targets = bbox_targets.view(batch_size, feature_height, feature_width, self.num_anchors*4).permute(0, 3, 1, 2).contiguous()
-		mask = rpnBuildTargetLayer.unmap(mask, total_anchors_ori, keep_idxs, batch_size, fill=0)
-		mask = mask.view(batch_size, total_anchors_ori, 1).expand(batch_size, total_anchors_ori, 4)
-		mask = mask.contiguous().view(batch_size, feature_height, feature_width, 4*self.num_anchors).permute(0, 3, 1, 2).contiguous()
+		bbox_mask = rpnBuildTargetLayer.unmap(bbox_mask, total_anchors_ori, keep_idxs, batch_size, fill=0)
+		bbox_mask = bbox_mask.view(batch_size, total_anchors_ori, 1).expand(batch_size, total_anchors_ori, 4)
+		bbox_mask = bbox_mask.contiguous().view(batch_size, feature_height, feature_width, 4*self.num_anchors).permute(0, 3, 1, 2).contiguous()
 		# pack return values into outputs
-		outputs = [labels, bbox_targets, mask]
+		outputs = [labels, bbox_targets, bbox_mask]
 		return outputs
 	@staticmethod
 	def unmap(data, count, inds, batch_size, fill=0):
@@ -251,10 +252,10 @@ class RegionProposalNet(nn.Module):
 			else:
 				raise ValueError('Unkown classification loss type <%s>...' % self.cfg.RPN_CLS_LOSS_SET['type'])
 			# --regression loss
-			bbox_targets, mask = targets[1:]
+			bbox_targets, bbox_mask = targets[1:]
 			if self.cfg.RPN_REG_LOSS_SET['type'] == 'betaSmoothL1Loss':
-				rpn_reg_loss = betaSmoothL1Loss(x_reg[mask>0].view(-1, 4), 
-												bbox_targets[mask>0].view(-1, 4), 
+				rpn_reg_loss = betaSmoothL1Loss(x_reg[bbox_mask>0].view(-1, 4), 
+												bbox_targets[bbox_mask>0].view(-1, 4), 
 												beta=self.cfg.RPN_REG_LOSS_SET['betaSmoothL1Loss']['beta'], 
 												size_average=self.cfg.RPN_REG_LOSS_SET['betaSmoothL1Loss']['size_average'],
 												loss_weight=self.cfg.RPN_REG_LOSS_SET['betaSmoothL1Loss']['weight'])
