@@ -197,8 +197,10 @@ class fasterRCNNBase(nn.Module):
 		if self.mode == 'TRAIN':
 			# --classification loss
 			if self.cfg.RCNN_CLS_LOSS_SET['type'] == 'cross_entropy':
-				loss_cls = F.cross_entropy(x_cls, rois_labels, size_average=self.cfg.RCNN_CLS_LOSS_SET['cross_entropy']['size_average'])
-				loss_cls = loss_cls * self.cfg.RCNN_CLS_LOSS_SET['cross_entropy']['weight']
+				loss_cls = CrossEntropyLoss(preds=x_cls, 
+											targets=rois_labels, 
+											loss_weight=self.cfg.RCNN_CLS_LOSS_SET['cross_entropy']['weight'],
+											size_average=self.cfg.RCNN_CLS_LOSS_SET['cross_entropy']['size_average'])
 			else:
 				raise ValueError('Unkown classification loss type <%s>...' % self.cfg.RCNN_CLS_LOSS_SET['type'])
 			# --regression loss

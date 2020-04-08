@@ -247,8 +247,10 @@ class RegionProposalNet(nn.Module):
 			labels_keep = torch.index_select(labels.view(-1), 0, keep_idxs.data)
 			labels_keep = labels_keep.long()
 			if self.cfg.RPN_CLS_LOSS_SET['type'] == 'cross_entropy':
-				rpn_cls_loss = F.cross_entropy(x_cls_preds_keep, labels_keep, size_average=self.cfg.RPN_CLS_LOSS_SET['cross_entropy']['size_average'])
-				rpn_cls_loss = rpn_cls_loss * self.cfg.RPN_CLS_LOSS_SET['cross_entropy']['weight']
+				rpn_cls_loss = CrossEntropyLoss(preds=x_cls_preds_keep,
+												targets=labels_keep,
+												loss_weight=self.cfg.RPN_CLS_LOSS_SET['cross_entropy']['weight'],
+												size_average=self.cfg.RPN_CLS_LOSS_SET['cross_entropy']['size_average'])
 			else:
 				raise ValueError('Unkown classification loss type <%s>...' % self.cfg.RPN_CLS_LOSS_SET['type'])
 			# --regression loss
