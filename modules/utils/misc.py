@@ -238,3 +238,10 @@ def loadCheckpoints(checkpointspath, logger_handle):
 	logger_handle.info('Loading checkpoints from %s...' % checkpointspath)
 	checkpoints = torch.load(checkpointspath)
 	return checkpoints
+
+
+'''clip gradient'''
+def clipGradients(params, max_norm=35, norm_type=2):
+	params = list(filter(lambda p: p.requires_grad and p.grad is not None, params))
+	if len(params) > 0:
+		clip_grad.clip_grad_norm_(params, max_norm=max_norm, norm_type=norm_type)
