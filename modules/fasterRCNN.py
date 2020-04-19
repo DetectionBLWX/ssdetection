@@ -216,9 +216,15 @@ class fasterRCNNBase(nn.Module):
 		cls_probs = cls_probs.view(batch_size, rois.size(1), -1)
 		bbox_preds = x_reg.view(batch_size, rois.size(1), -1)
 		return rois, cls_probs, bbox_preds, rpn_cls_loss, rpn_reg_loss, loss_cls, loss_reg
-	'''initialize except for backbone network'''
-	def initializeAddedModules(self, init_method):
-		raise NotImplementedError('fasterRCNNBase.initializeAddedModules is not implemented...')
+	'''initialize the added layers in rcnn'''
+	def initializeAddedLayers(self, init_method):
+		# normal init
+		if init_method == 'normal':
+			normalInit(self.fc_cls, 0, 0.01)
+			normalInit(self.fc_reg, 0, 0.001)
+		# unsupport
+		else:
+			raise RuntimeError('Unsupport initializeAddedLayers.init_method <%s>...' % init_method)
 	'''set bn fixed'''
 	@staticmethod
 	def setBnFixed(m):
@@ -269,7 +275,9 @@ class FasterRCNNResNets(fasterRCNNBase):
 		else:
 			self.fc_reg = nn.Linear(in_features, 4*self.num_classes)
 		if cfg.ADDED_MODULES_WEIGHT_INIT_METHOD and mode == 'TRAIN':
-			self.initializeAddedModules(cfg.ADDED_MODULES_WEIGHT_INIT_METHOD)
+			init_methods = cfg.ADDED_MODULES_WEIGHT_INIT_METHOD
+			self.rpn_net.initWeights(init_methods['rpn'])
+			self.initializeAddedLayers(init_methods['rcnn'])
 		# fix some first layers following original implementation
 		if cfg.FIXED_FRONT_BLOCKS:
 			for p in self.base_model[0].parameters():

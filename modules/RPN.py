@@ -43,6 +43,7 @@ class rpnProposalLayer(nn.Module):
 			self.nms_thresh = cfg.TEST_RPN_NMS_THRESH	
 		else:
 			raise ValueError('Unkown mode <%s> in rpnProposalLayer...' % mode)
+	'''forward'''
 	def forward(self, x):
 		# prepare
 		probs, x_reg_pred, img_info = x
@@ -117,6 +118,7 @@ class rpnBuildTargetLayer(nn.Module):
 			raise ValueError('Unkown mode <%s> in rpnBuildTargetLayer...' % mode)
 		self.num_anchors = self.anchors.size(0)
 		self.allowed_border = 0
+	'''forward'''
 	def forward(self, x):
 		# prepare
 		x_cls_pred, gt_boxes, img_info, num_gt_boxes = x
@@ -221,6 +223,7 @@ class RegionProposalNet(nn.Module):
 		self.rpn_proposal_layer = rpnProposalLayer(feature_stride=self.feature_stride, anchor_scales=self.anchor_scales, anchor_ratios=self.anchor_ratios, mode=self.mode, cfg=self.cfg)
 		# build target layer
 		self.rpn_build_target_layer = rpnBuildTargetLayer(feature_stride=self.feature_stride, anchor_scales=self.anchor_scales, anchor_ratios=self.anchor_ratios, mode=self.mode, cfg=self.cfg)
+	'''forward'''
 	def forward(self, x, gt_boxes, img_info, num_gt_boxes):
 		batch_size = x.size(0)
 		# do base classifiction and regression
@@ -264,6 +267,23 @@ class RegionProposalNet(nn.Module):
 			else:
 				raise ValueError('Unkown regression loss type <%s>...' % self.cfg.RPN_REG_LOSS_SET['type'])
 		return rois, rpn_cls_loss, rpn_reg_loss
+	'''initialize weights'''
+	def initWeights(self, init_method):
+		# normal init
+		if init_method == 'normal':
+			for layer in [self.rpn_conv_trans[0], self.rpn_conv_cls, self.rpn_conv_reg]:
+				normalInit(layer, std=0.01)
+		# kaiming init
+		elif init_method == 'kaiming':
+			for layer in [self.rpn_conv_trans[0], self.rpn_conv_cls, self.rpn_conv_reg]:
+				kaimingInit(layer, nonlinearity='relu')
+		# xavier
+		elif init_method == 'xavier':
+			for layer in [self.rpn_conv_trans[0], self.rpn_conv_cls, self.rpn_conv_reg]:
+				xavierInit(layer, distribution='uniform')
+		# unsupport
+		else:
+			raise RuntimeError('Unsupport initWeights.init_method <%s>...' % init_method)
 	'''
 	Function:
 		generate anchors.

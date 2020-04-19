@@ -1,6 +1,6 @@
 '''
 Function:
-	some shared methods for all datasets.
+	define some sample methods.
 Author:
 	Charles
 '''
