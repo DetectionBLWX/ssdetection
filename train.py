@@ -34,6 +34,7 @@ def train():
 	logger_handle = Logger(cfg.TRAIN_LOGFILE)
 	use_cuda = torch.cuda.is_available()
 	is_multi_gpus = cfg.IS_MULTI_GPUS
+	if is_multi_gpus: assert use_cuda
 	# prepare dataset
 	if args.datasetname == 'coco':
 		dataset = COCODataset(rootdir=cfg.DATASET_ROOT_DIR, image_size_dict=cfg.IMAGESIZE_DICT, max_num_gt_boxes=cfg.MAX_NUM_GT_BOXES, use_color_jitter=cfg.USE_COLOR_JITTER, img_norm_info=cfg.IMAGE_NORMALIZE_INFO, use_caffe_pretrained_model=cfg.USE_CAFFE_PRETRAINED_MODEL, mode='TRAIN', datasettype='train2017')
