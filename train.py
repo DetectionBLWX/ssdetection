@@ -91,9 +91,11 @@ def train():
 		logger_handle.info('Start epoch %s, learning rate is %s...' % (epoch, cfg.LEARNING_RATES[learning_rate_idx]))
 		# --train epoch
 		for batch_idx, samples in enumerate(dataloader):
-			if (epoch == 1) and (cfg.IS_USE_WARMUP) and (batch_idx == cfg.NUM_WARMUP_STEPS):
+			if (epoch == 1) and (cfg.IS_USE_WARMUP) and (batch_idx <= cfg.NUM_WARMUP_STEPS):
 				assert learning_rate_idx == 0, 'BUGS may exist...'
-				adjustLearningRate(optimizer=optimizer, target_lr=cfg.LEARNING_RATES[learning_rate_idx], logger_handle=logger_handle)
+				target_lr = cfg.LEARNING_RATES[learning_rate_idx] / 3
+				target_lr += (cfg.LEARNING_RATES[learning_rate_idx] - cfg.LEARNING_RATES[learning_rate_idx] / 3) * batch_idx / cfg.NUM_WARMUP_STEPS
+				adjustLearningRate(optimizer=optimizer, target_lr=target_lr)
 			optimizer.zero_grad()
 			img_ids, imgs, gt_boxes, img_info, num_gt_boxes = samples
 			output = model(x=imgs.type(FloatTensor), gt_boxes=gt_boxes.type(FloatTensor), img_info=img_info.type(FloatTensor), num_gt_boxes=num_gt_boxes.type(FloatTensor))
@@ -102,6 +104,7 @@ def train():
 			logger_handle.info('[EPOCH]: %s/%s, [BTACH]: %s/%s, [LEARNING_RATE]: %s, [DATASET]: %s \n\t [LOSS]: rpn_cls_loss %.4f, rpn_reg_loss %.4f, loss_cls %.4f, loss_reg %.4f, total %.4f' % \
 								(epoch, end_epoch, (batch_idx+1), len(dataloader), cfg.LEARNING_RATES[learning_rate_idx], args.datasetname, rpn_cls_loss.mean().item(), rpn_reg_loss.mean().item(), loss_cls.mean().item(), loss_reg.mean().item(), loss.item()))
 			loss.backward()
+			clipGradients(model.parameters(), max_norm=cfg.GRAD_CLIP_MAX_NORM, norm_type=cfg.GRAD_CLIP_NORM_TYPE)
 			optimizer.step()
 		# --save model
 		if (epoch % cfg.SAVE_INTERVAL == 0) or (epoch == end_epoch):
