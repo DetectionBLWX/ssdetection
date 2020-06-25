@@ -292,9 +292,12 @@ class FasterRCNNResNets(fasterRCNNBase):
 	def setTrain(self):
 		nn.Module.train(self, True)
 		if self.cfg.FIXED_FRONT_BLOCKS:
-			self.base_model.eval()
-			self.base_model[5].train()
-			self.base_model[6].train()
+			for p in self.base_model[0].parameters():
+				p.requires_grad = False
+			for p in self.base_model[1].parameters():
+				p.requires_grad = False
+			for p in self.base_model[4].parameters():
+				p.requires_grad = False
 		self.base_model.apply(fasterRCNNBase.setBnEval)
 		self.top_model.apply(fasterRCNNBase.setBnEval)
 	'''initialize model'''
