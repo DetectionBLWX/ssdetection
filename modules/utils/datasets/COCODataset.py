@@ -63,34 +63,33 @@ class COCODataset(Dataset):
 	'''get item'''
 	def __getitem__(self, index):
 		if self.mode == 'TRAIN':
-			while True:
-				# get image id
-				img_id = self.filtered_img_ids[index]
-				# get annotations, format is (x1, y1, x2, y2, label)
-				width, height, bboxes = self.id2annotation(img_id)
-				gt_boxes = np.array(bboxes)
-				# calculate num_gt_boxes
-				num_gt_boxes = torch.from_numpy(np.array([len(gt_boxes)]))
-				# get img
-				img_path = self.imgid2imgpath(img_id, self.datasettype)
-				img = Image.open(img_path).convert('RGB')
-				assert img.width == width, 'something may be wrong while reading image and annotation'
-				assert img.height == height, 'something may be wrong while reading image and annotation'
-				# preprocess img
-				if random.random() > 0.5:
-					img = ImageOps.mirror(img)
-					gt_boxes[:, [0, 2]] = img.width - gt_boxes[:, [2, 0]] - 1
-				img, scale_factor, target_size = COCODataset.preprocessImage(img, use_color_jitter=self.use_color_jitter, image_size_dict=self.image_size_dict, img_norm_info=self.img_norm_info, use_caffe_pretrained_model=self.use_caffe_pretrained_model)
-				# img info: (h, w, scale_factor)
-				img_info = torch.from_numpy(np.array([target_size[0], target_size[1], scale_factor]))
-				# correct gt_boxes
-				gt_boxes[..., :4] = gt_boxes[..., :4] * scale_factor
-				# padding gt_boxes
-				gt_boxes_padding = np.zeros((self.max_num_gt_boxes, 5), dtype=np.float32)
-				gt_boxes_padding[range(len(gt_boxes))[:self.max_num_gt_boxes]] = gt_boxes[:self.max_num_gt_boxes]
-				gt_boxes_padding = torch.from_numpy(gt_boxes_padding)
-				# return necessary data
-				return img_id, img, gt_boxes_padding, img_info, num_gt_boxes
+			# get image id
+			img_id = self.filtered_img_ids[index]
+			# get annotations, format is (x1, y1, x2, y2, label)
+			width, height, bboxes = self.id2annotation(img_id)
+			gt_boxes = np.array(bboxes)
+			# calculate num_gt_boxes
+			num_gt_boxes = torch.from_numpy(np.array([len(gt_boxes)]))
+			# get img
+			img_path = self.imgid2imgpath(img_id, self.datasettype)
+			img = Image.open(img_path).convert('RGB')
+			assert img.width == width, 'something may be wrong while reading image and annotation'
+			assert img.height == height, 'something may be wrong while reading image and annotation'
+			# preprocess img
+			if random.random() > 0.5:
+				img = ImageOps.mirror(img)
+				gt_boxes[:, [0, 2]] = img.width - gt_boxes[:, [2, 0]] - 1
+			img, scale_factor, target_size = COCODataset.preprocessImage(img, use_color_jitter=self.use_color_jitter, image_size_dict=self.image_size_dict, img_norm_info=self.img_norm_info, use_caffe_pretrained_model=self.use_caffe_pretrained_model)
+			# img info: (h, w, scale_factor)
+			img_info = torch.from_numpy(np.array([target_size[0], target_size[1], scale_factor]))
+			# correct gt_boxes
+			gt_boxes[..., :4] = gt_boxes[..., :4] * scale_factor
+			# padding gt_boxes
+			gt_boxes_padding = np.zeros((self.max_num_gt_boxes, 5), dtype=np.float32)
+			gt_boxes_padding[range(len(gt_boxes))[:self.max_num_gt_boxes]] = gt_boxes[:self.max_num_gt_boxes]
+			gt_boxes_padding = torch.from_numpy(gt_boxes_padding)
+			# return necessary data
+			return img_id, img, gt_boxes_padding, img_info, num_gt_boxes
 		else:
 			# get image id
 			img_id = self.filtered_img_ids[index]
