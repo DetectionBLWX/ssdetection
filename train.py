@@ -104,7 +104,6 @@ def train():
 			logger_handle.info('[EPOCH]: %s/%s, [BTACH]: %s/%s, [LEARNING_RATE]: %s, [DATASET]: %s \n\t [LOSS]: rpn_cls_loss %.4f, rpn_reg_loss %.4f, loss_cls %.4f, loss_reg %.4f, total %.4f' % \
 								(epoch, end_epoch, (batch_idx+1), len(dataloader), cfg.LEARNING_RATES[learning_rate_idx], args.datasetname, rpn_cls_loss.mean().item(), rpn_reg_loss.mean().item(), loss_cls.mean().item(), loss_reg.mean().item(), loss.item()))
 			loss.backward()
-			clipGradients(model.parameters(), max_norm=cfg.GRAD_CLIP_MAX_NORM, norm_type=cfg.GRAD_CLIP_NORM_TYPE)
 			optimizer.step()
 		# --save model
 		if (epoch % cfg.SAVE_INTERVAL == 0) or (epoch == end_epoch):
